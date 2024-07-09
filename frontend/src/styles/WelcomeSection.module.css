@@ -1,0 +1,54 @@
+.welcomeSection {
+  display: flex;
+  padding: 20px;
+  background-color: #fff;
+  font-family: var(--font-family);
+}
+
+.welcomeContent {
+  flex: 1;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 70px 50px;
+  border-radius: 30px;
+  margin-right: 20px;
+}
+
+.welcomeContent h1 {
+  margin: 0;
+  font-size: var(--font-size-h1);
+  font-weight: bold;
+}
+
+.welcomeContent h2 {
+  margin: 10px 0;
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-1);
+}
+
+.welcomeContent .highlight {
+  color: var(--primary-color);
+  font-style: italic;
+}
+
+.welcomeContent .highlight2 {
+  color: var(--primary-color);
+}
+
+.welcomeContent p {
+  margin: 40px 0 25px 0;
+  font-size: var(--font-size-p);
+  font-family: var(--font-family-text);
+}
+
+.carouselSection {
+  flex: 1;
+  text-align: center;
+}
+
+.carouselSection h3 {
+  color: var(--primary-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-1);
+}

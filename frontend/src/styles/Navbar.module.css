@@ -1,0 +1,56 @@
+.navbar {
+  background-color: var(--primary-color);
+  font-family: var(--font-family);
+  padding: 10px 20px;
+}
+
+.navbarContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leftContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: var(--font-size-h1);
+  font-weight: bold;
+  font-style: italic;
+}
+
+.logoLink {
+  color: white;
+  text-decoration: none;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin-left: 10px;
+  font-weight: var(--font-weight-1);
+}
+
+.navLinks li {
+  color: white;
+  font-size: var(--font-size-text);
+}
+
+.navLinks li a {
+  color: white;
+  text-decoration: none;
+}
+
+.navLinks li a:hover {
+  text-decoration: underline;
+}
+
+.login {
+  color: white;
+  font-size: var(--font-size-text);
+  cursor: pointer;
+  font-weight: var(--font-weight-1);
+}
