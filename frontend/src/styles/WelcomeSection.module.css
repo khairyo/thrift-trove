@@ -3,15 +3,17 @@
   padding: 20px;
   background-color: #fff;
   font-family: var(--font-family);
+  margin-left: 5%;
+  margin-top: 20px;
+  width: 90%;
 }
 
 .welcomeContent {
-  flex: 1;
   background-color: var(--secondary-color);
   color: white;
   padding: 70px 50px;
   border-radius: 30px;
-  margin-right: 20px;
+  margin-right: 30px;
 }
 
 .welcomeContent h1 {
@@ -41,14 +43,12 @@
   font-family: var(--font-family-text);
 }
 
-.carouselSection {
-  flex: 1;
-  text-align: center;
-}
-
 .carouselSection h3 {
+  float: right;
+  padding-right: 15px;
+  padding-bottom: 5px;
   color: var(--primary-color);
   font-family: var(--font-family);
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-1);
+  font-size: var(--font-size-h2);
+  font-weight: bold;
 }
