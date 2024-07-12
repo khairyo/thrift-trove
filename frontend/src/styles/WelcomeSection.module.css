@@ -24,7 +24,7 @@
 
 .welcomeContent h2 {
   margin: 10px 0;
-  font-size: var(--font-size-h2);
+  font-size: var(--font-size-h3);
   font-weight: var(--font-weight-1);
 }
 
@@ -41,6 +41,7 @@
   margin: 40px 0 25px 0;
   font-size: var(--font-size-p);
   font-family: var(--font-family-text);
+  color: white;
 }
 
 .carouselSection h3 {
@@ -49,6 +50,6 @@
   padding-bottom: 5px;
   color: var(--primary-color);
   font-family: var(--font-family);
-  font-size: var(--font-size-h2);
+  font-size: var(--font-size-h3);
   font-weight: bold;
 }

@@ -1,0 +1,97 @@
+.footer {
+  position: relative;
+  text-align: center;
+  color: white;
+  font-family: var(--font-family);
+  overflow-x: hidden;
+}
+
+.footerTop {
+  position: relative;
+  z-index: 1;
+  padding: 40px 20px 0 20px;
+}
+
+.footerContent {
+  background-color: var(--secondary-color);
+  padding: 40px 20px;
+  border-radius: 20px;
+  margin: 0 auto 0 auto;
+  position: relative;
+  z-index: 2;
+  width: 60%;
+}
+
+.footerTop::before {
+  content: '';
+  background-color: var(--primary-color);
+  position: absolute;
+  top: 60%;
+  left: 0;
+  width: 100%;
+  height: 41%;
+  z-index: 1;
+}
+
+.footerContent h2 {
+  font-size: 29px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.footerContent p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  font-weight: var(--font-weight-1);
+}
+
+.highlight {
+  color: var(--primary-color);
+}
+
+.contactInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 22vw 10px 24vw; 
+  font-family: var(--font-family-text);
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.envelope, .phone, .xTwitter, .instagram {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  color: var(--primary-color);
+}
+
+.footerBottom {
+  background-color: var(--primary-color);
+  padding: 20px 20px 10px 20px;
+  font-size: 14px;
+}
+
+@media (min-width: 700px) {
+  .contactItem {
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .footerContent {
+    width: 80%;
+  }
+}
+
+@media (max-width: 700px) {
+  .contactInfo {
+    grid-template-columns: 1fr;
+  }
+}
