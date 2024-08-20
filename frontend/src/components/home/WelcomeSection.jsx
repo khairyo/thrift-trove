@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 import Carousel from './Carousel';
 
 // import styles
-import styles from '../styles/WelcomeSection.module.css';
+import styles from './styles/WelcomeSection.module.css';
 import { primaryButton } from '../styles/MuiStyles.js';
 
 function WelcomeSection() {
