@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; 
+import Pagination from '@mui/material/Pagination'; 
+
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters'; 
 
@@ -10,6 +12,8 @@ import styles from './styles/Products.module.css';
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 24; 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -44,6 +48,15 @@ const Products = () => {
     }
 
     setFilteredProducts(filtered);
+    setCurrentPage(1); 
+  };
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -53,7 +66,7 @@ const Products = () => {
         <Filters onFilterChange={handleFilterChange} />
         <div className={styles.shopContainer}>
           <div className={styles.grid}>
-            {filteredProducts.map(product => (
+            {currentProducts.map(product => (
               <div key={product.id} className={styles.productCard}>
                 <div className={styles.productImageContainer}>
                   <img src={product.image} alt={product.name} className={styles.image} />
@@ -71,6 +84,25 @@ const Products = () => {
               </div>
             ))}
           </div>
+          <Pagination 
+            count={Math.ceil(filteredProducts.length / productsPerPage)} 
+            page={currentPage} 
+            onChange={handlePageChange} 
+            sx={{ 
+              marginTop: '50px', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              marginRight: '20%', 
+              '& .Mui-selected': {
+                backgroundColor: 'var(--primary-color)',
+                color: '#fff', 
+                '&:hover': {
+                  backgroundColor: 'var(--primary-color)',
+                  color: '#fff', 
+                },
+              }
+            }}
+          />
         </div>
       </div>
     </div>

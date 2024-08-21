@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; 
 import { Button } from '@mui/material';
 
@@ -9,6 +10,12 @@ import { primaryButton } from '../styles/MuiStyles.js';
 
 const HomeShop = () => {
   const [products, setProducts] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/shop');
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,7 +57,7 @@ const HomeShop = () => {
           </div>
         ))}
       </div>
-      <Button sx={{ ...primaryButton, marginTop: '50px', marginBottom: '20px' }} variant="contained">View all products</Button>
+      <Button sx={{ ...primaryButton, marginTop: '50px', marginBottom: '20px' }} variant="contained" onClick={handleClick}>View all products</Button>
     </div>
   );
 };

@@ -50,6 +50,35 @@
   text-decoration: underline;
 }
 
+.rightContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between search bar and login */
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px 10px;
+  height: 38px;
+}
+
+.searchIcon {
+  color: var(--primary-color);
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  padding: 5px;
+  border-radius: 20px;
+  width: 200px; /* Adjust width as needed */
+  font-family: var(--font-family);
+  height: 38px;
+}
+
 .login {
   color: white;
   font-size: var(--font-size-text);

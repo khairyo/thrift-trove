@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
 import styles from './styles/Navbar.module.css';
 
 function Navbar() {
@@ -18,8 +19,18 @@ function Navbar() {
             <li>Contact Us</li>
           </ul>
         </div>
-        <div className={styles.login}>
-          Login
+        <div className={styles.rightContainer}>
+          <div className={styles.searchContainer}>
+            <input 
+              type="text" 
+              className={styles.searchInput} 
+              placeholder="Search products..."
+            />
+            <SearchIcon className={styles.searchIcon} />
+          </div>
+          <div className={styles.login}>
+            Login
+          </div>
         </div>
       </div>
     </nav>

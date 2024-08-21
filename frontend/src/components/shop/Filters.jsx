@@ -5,6 +5,8 @@ import FormGroup from '@mui/material/FormGroup';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 
+import '../../App.css';
+
 const Filters = ({ onFilterChange }) => {
   const [gender, setGender] = useState({ men: false, women: false });
   const [clothingType, setClothingType] = useState({ tops: false, bottoms: false });
@@ -22,24 +24,26 @@ const Filters = ({ onFilterChange }) => {
   };
 
   return (
-    <div style={{ 
-      width: '200px', 
-    }}>
+    <div style={{ width: '150px' }}>
       <Typography 
         variant="h6" 
         gutterBottom 
-        color="var(--primary-color)" 
-        fontWeight="bold"
-        fontFamily='var(--font-family)'
+        style={{
+          color: 'var(--primary-color)', 
+          fontWeight: 'bold',
+          fontFamily: 'var(--font-family)',
+          marginBottom: '20px',
+          fontSize: '18px',
+        }}
       >
         FILTERS
       </Typography>
       
-      <Divider />
+      <Divider style={{ marginTop: '10px', marginBottom: '20px', backgroundColor: 'var(--primary-color)' }} />
 
-      <div style={{ marginTop: '20px' }}>
-        <Typography variant="subtitle1" gutterBottom>
-          Gender / Age
+      <div style={{ marginBottom: '20px' }}>
+        <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', color: 'black', fontSize: '16px' }}>
+          Gender
         </Typography>
         <FormGroup>
           <FormControlLabel
@@ -48,9 +52,11 @@ const Filters = ({ onFilterChange }) => {
                 checked={gender.men}
                 onChange={handleGenderChange}
                 name="men"
+                sx={{ color: 'var(--primary-color)', '&.Mui-checked': { color: 'var(--primary-color)' } }}
               />
             }
             label="Men"
+            style={{ fontSize: '14px', color: 'black', fontWeight: 'normal' }}
           />
           <FormControlLabel
             control={
@@ -58,17 +64,19 @@ const Filters = ({ onFilterChange }) => {
                 checked={gender.women}
                 onChange={handleGenderChange}
                 name="women"
+                sx={{ color: 'var(--primary-color)', '&.Mui-checked': { color: 'var(--primary-color)' } }}
               />
             }
             label="Women"
+            style={{ fontSize: '14px', color: 'black', fontWeight: 'normal' }}
           />
         </FormGroup>
       </div>
 
-      <Divider style={{ marginTop: '20px', marginBottom: '20px' }} />
+      <Divider style={{ marginTop: '10px', marginBottom: '20px', backgroundColor: 'var(--primary-color)' }} />
 
-      <div>
-        <Typography variant="subtitle1" gutterBottom>
+      <div style={{ marginBottom: '20px' }}>
+        <Typography variant="subtitle1" gutterBottom style={{ fontWeight: 'bold', color: 'black', fontSize: '16px' }}>
           Clothing Type
         </Typography>
         <FormGroup>
@@ -78,9 +86,16 @@ const Filters = ({ onFilterChange }) => {
                 checked={clothingType.tops}
                 onChange={handleClothingTypeChange}
                 name="tops"
+                sx={{ 
+                  color: 'var(--primary-color)',
+                  '&.Mui-checked': {
+                    color: 'var(--primary-color)',
+                  },
+                }}
               />
             }
             label="Tops"
+            style={{ fontSize: '14px', color: 'black', fontWeight: 'normal' }}
           />
           <FormControlLabel
             control={
@@ -88,9 +103,11 @@ const Filters = ({ onFilterChange }) => {
                 checked={clothingType.bottoms}
                 onChange={handleClothingTypeChange}
                 name="bottoms"
+                sx={{ color: 'var(--primary-color)', '&.Mui-checked': { color: 'var(--primary-color)' } }}
               />
             }
             label="Bottoms"
+            style={{ fontSize: '14px', color: 'black', fontWeight: 'normal' }}
           />
         </FormGroup>
       </div>

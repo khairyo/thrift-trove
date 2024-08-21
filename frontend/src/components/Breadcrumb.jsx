@@ -8,7 +8,7 @@ const Breadcrumb = () => {
     <Breadcrumbs 
       separator="/" 
       aria-label="breadcrumb"
-      sx={{ color: 'var(--primary-color)', margin: '0 0 20px 0' }}
+      sx={{ color: 'var(--primary-color)', margin: '10px 0 30px 0' }}
     >
       <Link
         underline="hover"
