@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
+import axios from 'axios';
 
 const LoginDialog = ({ open, onClose, onRegisterOpen }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/account/login', {
+        accemail: email,
+        accpass: password,
+      });
+
+      localStorage.setItem('token', response.data.token); // Save JWT token
+      localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user data
+      onClose(); // Close the dialog
+      
+      // Optionally redirect to a protected page or update the UI
+
+      console.log("Login successful for user: ", email);
+    } catch (err) {
+      setError('Invalid email or password');
+    }
+  };
+
   const commonTextFieldStyles = () => ({
     marginBottom: '16px',
     width: '100%',
@@ -53,6 +77,8 @@ const LoginDialog = ({ open, onClose, onRegisterOpen }) => {
         <TextField
           label="Email"
           variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           sx={{
             ...commonTextFieldStyles(),
             marginTop: '16px',
@@ -62,12 +88,14 @@ const LoginDialog = ({ open, onClose, onRegisterOpen }) => {
           label="Password"
           type="password"
           variant="outlined"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           sx={{
             ...commonTextFieldStyles(),
           }}
         />
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        {/* Register new account / Take me in */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Link
             component="button"
@@ -82,10 +110,10 @@ const LoginDialog = ({ open, onClose, onRegisterOpen }) => {
               marginBottom: '20px',
               marginTop: '-10px',
               textAlign: 'right',
-              textDecorationColor: 'gray',  // Change the underline color to gray
+              textDecorationColor: 'gray',
               '&:hover': {
                 color: 'black',
-                textDecorationColor: 'black',  // Keep underline gray on hover
+                textDecorationColor: 'black',
               },
             }}
           >
@@ -93,6 +121,7 @@ const LoginDialog = ({ open, onClose, onRegisterOpen }) => {
           </Link>
           <Button
             variant="contained"
+            onClick={handleLogin}
             sx={{
               fontFamily: 'var(--font-family-text)',
               backgroundColor: 'var(--primary-color)',

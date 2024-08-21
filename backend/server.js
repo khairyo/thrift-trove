@@ -9,8 +9,12 @@ app.use(bodyParser.json());
 app.use(express.json())
 app.use(cors({ credentials: true, origin: true }));
 
+app.get('/', (req, res) => {
+  res.send('Server is up and running!');
+});
+
 // Account & User Profile & Address
-// app.use("/api/account", require("./routes/account.route"))
+app.use("/api/account", require("./routes/account.route"))
 // app.use("/api/user-profile", require("./routes/userProfile.route"))
 // app.use("/api/address", require("./routes/address.route"))
 

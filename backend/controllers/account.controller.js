@@ -4,41 +4,43 @@ const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 
 const accountController = {
-    getAllAccounts: async (req, res) => {
-        try {
-            var sql = 'SELECT * FROM account ORDER BY accid ASC'
+    // getAllAccounts: async (req, res) => {
+    //     try {
+    //         var sql = 'SELECT * FROM account ORDER BY accid ASC'
 
-            const { rows } = await postgre.query(sql)
+    //         const { rows } = await postgre.query(sql)
 
-            res.status(200).json({ data: rows })
+    //         res.status(200).json({ data: rows })
 
-        } catch (error) {
-            res.status(404).json({ msg: error.msg })
-        }
-    },
-    getById: async (req, res) => {
-        try {
-            var { accid } = req.query;
-            var sql = 'SELECT * FROM account WHERE accid = $1'
+    //     } catch (error) {
+    //         res.status(404).json({ msg: error.msg })
+    //     }
+    // },
+    // getById: async (req, res) => {
+    //     try {
+    //         var { accid } = req.query;
+    //         var sql = 'SELECT * FROM account WHERE accid = $1'
 
-            const { rows } = await postgre.query(sql, [accid])
+    //         const { rows } = await postgre.query(sql, [accid])
 
-            if (rows[0]) {
-                return res.status(200).json({ data: rows })
-            }
+    //         if (rows[0]) {
+    //             return res.status(200).json({ data: rows })
+    //         }
 
-            return res.status(404).json({ msg: "Account is not found" })
+    //         return res.status(404).json({ msg: "Account is not found" })
 
-        } catch (error) {
-            res.status(404).json({ msg: error.msg })
-        }
-    },
-    create: async (req, res) => {
+    //     } catch (error) {
+    //         res.status(404).json({ msg: error.msg })
+    //     }
+    // },
+    
+	create: async (req, res) => {
         try {
             const { username, accemail, accpass } = req.body
             const hashedPassword = await bcrypt.hash(accpass, 10);
 
             const checkAccountExist = `SELECT EXISTS(SELECT 1 FROM account WHERE username = $1 AND accemail = $2);`
+			// rmb 'account_id_seq' doesn't exist on its own; it's created by you
             const insertAccountData = `INSERT INTO account(accid, username, accemail, accpass)
                          VALUES(nextval('account_id_seq'), $1, $2, $3) RETURNING *;`
             const insertUserProfileData = `INSERT INTO userprofile(accid) VALUES($1) RETURNING *;`
@@ -48,14 +50,14 @@ const accountController = {
                 // Else if account does not exist
                 // Else account exist
                 if (error) {
-                    res.status(404).json({ msg: error.msg })
+                    res.status(404).json({ msg: `Error 1: ${error.msg}` })
                 } else {
                     if (result.rows[0].exists == false) {
 
                         // Insert data into Account Table
                         postgre.query(insertAccountData, [username, accemail.toLowerCase(), hashedPassword], async (error, accountData) => {
                             if (error) {
-                                res.status(404).json({ msg: error.msg })
+                                res.status(404).json({ msg: `Error 2: ${error.msg}` })
                             } else {
                                 if (accountData.rows[0]) {
                                     const accid = accountData.rows[0].accid;
@@ -67,7 +69,7 @@ const accountController = {
                                         return res.status(201).json({ msg: "Account created" })
                                     }
                                 } else {
-                                    return res.status(404).json({ msg: "Failed to create an account" })
+                                    return res.status(404).json({ msg: "Failed to create an account"})
                                 }
                             }
                         })
@@ -113,6 +115,7 @@ const accountController = {
             res.status(404).json({ msg: error.msg })
         }
     },
+
     // updateEmail: async (req, res) => {
     //     try {
     //         const { accid, accemail, newemail } = req.body
@@ -163,39 +166,39 @@ const accountController = {
     //         res.status(404).json({ msg: error.msg });
     //     }
     // },
-    deleteById: async (req, res) => {
-        try {
-            var { accid } = req.body;
+//     deleteById: async (req, res) => {
+//         try {
+//             var { accid } = req.body;
 
-            const deleteUserProfile = 'DELETE FROM userprofile where accid = $1 RETURNING *;';
-            const deleteAccount = 'DELETE FROM account where accid = $1 RETURNING *;';
+//             const deleteUserProfile = 'DELETE FROM userprofile where accid = $1 RETURNING *;';
+//             const deleteAccount = 'DELETE FROM account where accid = $1 RETURNING *;';
 
-            postgre.query(deleteUserProfile, [accid], async (error, result) => {
-                // If there is an error
-                // Else if userprofile can't be deleted
-                // Else account exist
-                if (error) {
-                    res.status(404).json({ msg: error.msg })
-                } else {
-                    if (result.rows[0]) {
+//             postgre.query(deleteUserProfile, [accid], async (error, result) => {
+//                 // If there is an error
+//                 // Else if userprofile can't be deleted
+//                 // Else account exist
+//                 if (error) {
+//                     res.status(404).json({ msg: error.msg })
+//                 } else {
+//                     if (result.rows[0]) {
 
-                        const { rows } = await postgre.query(deleteAccount, [accid])
+//                         const { rows } = await postgre.query(deleteAccount, [accid])
 
-                        if (rows[0]) {
-                            return res.status(200).json({ msg: "Account is deleted" })
-                        }
+//                         if (rows[0]) {
+//                             return res.status(200).json({ msg: "Account is deleted" })
+//                         }
 
-                        return res.status(404).json({ msg: "Account is not found" })
+//                         return res.status(404).json({ msg: "Account is not found" })
 
-                    } else {
-                        return res.status(404).json({ msg: "User Profile can't be deleted" })
-                    }
-                }
-            })
-        } catch (error) {
-            res.status(404).json({ msg: error.msg })
-        }
-    }
+//                     } else {
+//                         return res.status(404).json({ msg: "User Profile can't be deleted" })
+//                     }
+//                 }
+//             })
+//         } catch (error) {
+//             res.status(404).json({ msg: error.msg })
+//         }
+//     }
 };
 
 module.exports = accountController;
