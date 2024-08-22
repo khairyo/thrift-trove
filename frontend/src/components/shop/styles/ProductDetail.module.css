@@ -1,75 +1,78 @@
+.container {
+  padding: 20px 0;
+  width: 90%;
+  margin: 0 5%;
+}
+
 .productDetailContainer {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  padding: 3% 15%;
   font-family: var(--font-family);
 }
 
 .productImageContainer {
-  flex: 1;
-  min-width: 300px;
-  margin-right: 20px;
+  flex: 0 1 50%;
+  max-width: 28vw;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
+  border-radius: 30px; 
+  margin-right: 10%;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); 
+  }
 }
 
 .productInfoContainer {
   flex: 1;
-  min-width: 300px;
+  text-align: left;
 }
 
 .category {
-  color: var(--primary-color);
-  font-size: 18px;
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 17px;
   margin-bottom: 10px;
-  text-transform: uppercase;
   font-weight: bold;
 }
 
 .productName {
-  font-size: 28px;
-  margin-bottom: 20px;
-  font-weight: bold;
+  font-size: 19px;
+  margin-bottom: 2px;
   color: black;
+  font-weight: 600;
 }
 
 .price {
-  font-size: 24px;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-  font-weight: bold;
+  font-size: 17px;
+  color: black;
+  margin-bottom: 15px;
+  font-weight: 600;
 }
 
 .description {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 30px;
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  font-family: var(--font-family-text);
 }
 
-.addToCartButton {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
+.addButton {
+  background-color: transparent; /* Removed background color */
+  color: var(--primary-color);
   border: none;
-  border-radius: 5px;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
   display: flex;
   align-items: center;
-}
-
-.addToCartButton:hover {
-  background-color: darken(var(--primary-color), 10%);
-}
-
-.cartIcon {
-  margin-right: 8px;
 }
