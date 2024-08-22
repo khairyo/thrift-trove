@@ -16,19 +16,21 @@ const productController = {
     },
     getProductById: async (req, res) => {
         try {
-            var { id } = req.query; // req.query shd have id as key
-            var sql = 'SELECT * FROM products WHERE id = $1'
+            // OBSOLETE
+            // var { id } = req.query; // This expects ?id=1 in the URL
 
-            const { rows } = await postgre.query(sql, [id])
-
-            if (rows[0]) {
-                return res.status(200).json({ data: rows })
+            const { id } = req.params; // This expects /product/1 in the URL
+            const sql = 'SELECT * FROM products WHERE id = $1';
+    
+            const { rows } = await postgre.query(sql, [id]);
+    
+            if (rows.length > 0) {
+                return res.status(200).json(rows[0]); // Return the single product object
+            } else {
+                return res.status(404).json({ msg: "Product not found" });
             }
-
-            res.status(404).json({ msg: "Product is not found" })
-
         } catch (error) {
-            res.status(404).json({ msg: error.msg })
+            res.status(500).json({ msg: "Error retrieving product", error: error.message });
         }
     },
     // getProductByAccId: async (req, res) => {

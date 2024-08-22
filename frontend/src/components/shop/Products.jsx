@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; 
 import Pagination from '@mui/material/Pagination'; 
@@ -67,7 +68,8 @@ const Products = () => {
         <div className={styles.shopContainer}>
           <div className={styles.grid}>
             {currentProducts.map(product => (
-              <div key={product.id} className={styles.productCard}>
+
+              <Link to={`/product/${product.id}`} key={product.id} className={styles.productCard}>
                 <div className={styles.productImageContainer}>
                   <img src={product.image} alt={product.name} className={styles.image} />
                 </div>
@@ -81,7 +83,8 @@ const Products = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </Link>
+              
             ))}
           </div>
           <Pagination 
