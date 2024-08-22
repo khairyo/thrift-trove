@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginDialog from './LoginDialog';
-import RegisterDialog from './RegisterDialog'; // Import the RegisterDialog component
+import RegisterDialog from './RegisterDialog';
 import styles from './styles/Navbar.module.css';
+import axios from 'axios';
 
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
   const [isLoginDialogOpen, setLoginDialogOpen] = useState(false);
   const [isRegisterDialogOpen, setRegisterDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUserProfile(token);
+    } else {
+      throw new Error("No token found in local storage");
+    }
+  }, []);
+
+  const fetchUserProfile = async (token) => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/account', {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setUserProfile(response.data.data);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Error fetching user profile", error);
+    }
+  };
 
   const handleLoginClick = () => {
     setLoginDialogOpen(true);
@@ -16,10 +43,6 @@ function Navbar() {
   const handleLoginClose = () => {
     setLoginDialogOpen(false);
   };
-
-  // const handleRegisterOpen = () => {
-  //   setRegisterDialogOpen(true);
-  // };
 
   const handleRegisterClose = () => {
     setRegisterDialogOpen(false);
@@ -54,9 +77,22 @@ function Navbar() {
             />
             <SearchIcon className={styles.searchIcon} />
           </div>
-          <div className={styles.login} onClick={handleLoginClick}>
-            Login
-          </div>
+
+          {isLoggedIn && userProfile ? (
+            <div className={styles.loggedInContainer}>
+              <ShoppingCartIcon className={styles.cartIcon} />
+              <img 
+                src={userProfile.profile_picture || '/path/to/placeholder-image.png'} 
+                alt="Profile" 
+                className={styles.profileImage} 
+                onError={(e) => e.target.src = '/images/blank_profile.jpg'} 
+              />
+            </div>
+          ) : (
+            <div className={styles.login} onClick={handleLoginClick}>
+              Login
+            </div>
+          )}
         </div>
       </div>
 

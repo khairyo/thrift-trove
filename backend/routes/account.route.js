@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const accountController = require("../controllers/account.controller")
+const verifyToken = require("../middleware/auth");
 
 // router.get("/get-all-accounts", accountController.getAllAccounts);
-// router.get("/", accountController.getById);
+router.get("/", verifyToken, accountController.getById);
 router.post("/create", accountController.create);
 router.post("/login", accountController.verifyAccount);
 // router.put("/update-email", accountController.updateEmail);

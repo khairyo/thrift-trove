@@ -16,23 +16,24 @@ const accountController = {
     //         res.status(404).json({ msg: error.msg })
     //     }
     // },
-    // getById: async (req, res) => {
-    //     try {
-    //         var { accid } = req.query;
-    //         var sql = 'SELECT * FROM account WHERE accid = $1'
 
-    //         const { rows } = await postgre.query(sql, [accid])
-
-    //         if (rows[0]) {
-    //             return res.status(200).json({ data: rows })
-    //         }
-
-    //         return res.status(404).json({ msg: "Account is not found" })
-
-    //     } catch (error) {
-    //         res.status(404).json({ msg: error.msg })
-    //     }
-    // },
+	getById: async (req, res) => {
+		try {
+			const accemail = req.user.accemail;  // Assuming the token contains the user's email
+			const sql = 'SELECT * FROM account WHERE accemail = $1';
+	
+			const { rows } = await postgre.query(sql, [accemail]);
+	
+			if (rows[0]) {
+				return res.status(200).json({ data: rows[0] });  // Return the user data directly
+			}
+	
+			return res.status(404).json({ msg: "Account not found" });
+	
+		} catch (error) {
+			res.status(404).json({ msg: `getById Error: ${error.msg}` });
+		}
+	},
     
 	create: async (req, res) => {
         try {
