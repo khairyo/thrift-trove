@@ -81,14 +81,16 @@ function Navbar() {
           {isLoggedIn && userProfile ? (
             <div className={styles.loggedInContainer}>
               <Link to="/cart" className={styles.cartIcon}>
-              <ShoppingCartIcon />
+                <ShoppingCartIcon />
               </Link>
-              <img 
-                src={userProfile.profile_picture || '/path/to/placeholder-image.png'} 
-                alt="Profile" 
-                className={styles.profileImage} 
-                onError={(e) => e.target.src = '/images/blank_profile.jpg'} 
-              />
+              <Link to="/my-shop">
+                <img 
+                  src={userProfile.profile_picture || '/path/to/placeholder-image.png'} 
+                  alt="Profile Image" 
+                  className={styles.profileImage} 
+                  onError={(e) => e.target.src = '/images/blank_profile.jpg'} 
+                />
+              </Link>
             </div>
           ) : (
             <div className={styles.login} onClick={handleLoginClick}>
