@@ -15,6 +15,7 @@ import MyProductsPage from './pages/MyProducts';
 import MyProductDetail from './pages/MyProductDetail';
 import StripeCancel from './pages/StripeCancel';
 import StripeSuccess from './pages/StripeSucess';
+import ProductUploadPage from './pages/ProductUpload';
 
 // import css
 import './App.css';
@@ -32,8 +33,9 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/my-shop" element={<MyProductsPage />} />
           <Route path="/my-product/:id" element={<MyProductDetail />} />
-          <Route path="/cancel" element={<StripeCancel />} />
+          <Route path="/cancel" element={<StripeCancel />}  />
           <Route path="/success" element={<StripeSuccess />} />
+          <Route path="/upload" element={<ProductUploadPage />} />
         </Routes>
         <Footer />
       </div>
