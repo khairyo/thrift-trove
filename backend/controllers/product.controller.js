@@ -1,5 +1,6 @@
 require('dotenv').config()
 const postgre = require('../config/database')
+const cloudinary = require('../config/cloudinary');
 
 const productController = {
     getAllProducts: async (req, res) => {
@@ -52,6 +53,8 @@ const productController = {
     },
     create: async (req, res) => { // implemented
         try {
+            console.log('Received request:', req.body);
+
             const { category, type, product_url, image, name, price, description, uploader_id } = req.body
             const sql = `INSERT INTO products(id, category, type, product_url, image, name, price, description, uploader_id)
                          VALUES(nextval('product_id_seq'), $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`
@@ -65,7 +68,7 @@ const productController = {
             return res.status(404).json({ msg: "Failed to create a product" })
 
         } catch (error) {
-            res.status(404).json({ msg: error.msg })
+            res.status(404).json({ msg: error.message })
         }
     },
     deleteProductById: async (req, res) => { // implemented
