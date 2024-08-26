@@ -16,7 +16,7 @@ const Cart = () => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 7;
+  const productsPerPage = 7; 
 
   // Gets JWT from local storage
   useEffect(() => {
@@ -45,8 +45,8 @@ const Cart = () => {
   // Fetch cart items using accid
   useEffect(() => {
     const fetchCartItems = async () => {
-      if (!accid) return;
-
+      if (!accid) return; 
+  
       try {
         const response = await axios.get('http://localhost:5000/api/cart/get-all-cartitems', {
           params: { accid: accid }
@@ -56,23 +56,23 @@ const Cart = () => {
         console.error('Error fetching cart items:', error.message);
       }
     };
-
+  
     fetchCartItems();
   }, [accid]);
-
+  
   // Fetch product details using productid
   useEffect(() => {
     const fetchProductDetails = async () => {
-      if (cartItems.length === 0) return;
-
+      if (cartItems.length === 0) return; 
+  
       try {
         const productDetailsArray = await Promise.all(
           cartItems.map(async (item) => {
             const productResponse = await axios.get(`http://localhost:5000/api/product/${item.productid}`);
-            return productResponse.data;
+            return { ...item, ...productResponse.data };
           })
         );
-
+  
         setProductDetails(productDetailsArray);
 
         // DEBUG
@@ -81,7 +81,7 @@ const Cart = () => {
         console.error('Error fetching product details:', error.message);
       }
     };
-
+  
     fetchProductDetails();
   }, [cartItems]);
 
@@ -93,18 +93,18 @@ const Cart = () => {
   useEffect(() => {
     const calculateTotalPrice = () => {
       let subtotal = 0;
-      productDetails.forEach(product => {
+      currentProducts.forEach(product => {
         subtotal += Number(product.price.slice(4));
       });
-      setSubtotal(subtotal.toFixed(2));
-      setTotalPrice((subtotal + deliveryFee).toFixed(2));
+      setSubtotal(subtotal.toFixed(2));  
+      setTotalPrice((subtotal + deliveryFee).toFixed(2)); 
     };
     calculateTotalPrice();
-  }, [productDetails, deliveryFee]);
+  }, [currentProducts, deliveryFee]);
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (event, value) => {   // Handle page change for pagination
     setCurrentPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
   };
 
   // Delete item from cart
