@@ -48,7 +48,6 @@ const cartController = {
     },
     deleteItem: async (req, res) => {
         try {
-
             const { cartitemid, accid } = req.body;
             const sql = `DELETE FROM cart WHERE cartitemid = $1 AND accid = $2 RETURNING *;`
 

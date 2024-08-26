@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Breadcrumb from '../Breadcrumb';
 import Pagination from '@mui/material/Pagination';
-
 import styles from './styles/Cart.module.css';
 
 const Cart = () => {
@@ -17,7 +16,7 @@ const Cart = () => {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 7; 
+  const productsPerPage = 7;
 
   // Gets JWT from local storage
   useEffect(() => {
@@ -46,8 +45,8 @@ const Cart = () => {
   // Fetch cart items using accid
   useEffect(() => {
     const fetchCartItems = async () => {
-      if (!accid) return; 
-  
+      if (!accid) return;
+
       try {
         const response = await axios.get('http://localhost:5000/api/cart/get-all-cartitems', {
           params: { accid: accid }
@@ -57,23 +56,23 @@ const Cart = () => {
         console.error('Error fetching cart items:', error.message);
       }
     };
-  
+
     fetchCartItems();
   }, [accid]);
-  
+
   // Fetch product details using productid
   useEffect(() => {
     const fetchProductDetails = async () => {
-      if (cartItems.length === 0) return; 
-  
+      if (cartItems.length === 0) return;
+
       try {
         const productDetailsArray = await Promise.all(
           cartItems.map(async (item) => {
             const productResponse = await axios.get(`http://localhost:5000/api/product/${item.productid}`);
-            return { ...item, ...productResponse.data };
+            return productResponse.data;
           })
         );
-  
+
         setProductDetails(productDetailsArray);
 
         // DEBUG
@@ -82,7 +81,7 @@ const Cart = () => {
         console.error('Error fetching product details:', error.message);
       }
     };
-  
+
     fetchProductDetails();
   }, [cartItems]);
 
@@ -94,42 +93,63 @@ const Cart = () => {
   useEffect(() => {
     const calculateTotalPrice = () => {
       let subtotal = 0;
-      currentProducts.forEach(product => {
+      productDetails.forEach(product => {
         subtotal += Number(product.price.slice(4));
       });
-      setSubtotal(subtotal.toFixed(2));  
-      setTotalPrice((subtotal + deliveryFee).toFixed(2)); 
+      setSubtotal(subtotal.toFixed(2));
+      setTotalPrice((subtotal + deliveryFee).toFixed(2));
     };
     calculateTotalPrice();
-  }, [currentProducts, deliveryFee]);
+  }, [productDetails, deliveryFee]);
 
-  const handlePageChange = (event, value) => {   // Handle page change for pagination
+  const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Delete item from cart
   const handleDeleteItem = async (cartitemid) => {
     try {
-      await axios.delete('http://localhost:5000/api/cart/delete', {
-        data: { cartitemid, accid: accid }
-      });
-  
-      // Filter out the deleted item from both productDetails and cartItems
+      await axios.delete(`http://localhost:5000/api/cart/delete`, {
+        data: { 
+          cartitemid: cartitemid, 
+          accid: accid 
+        },
+      });      
+
       setProductDetails(productDetails.filter(item => item.cartitemid !== cartitemid));
       setCartItems(cartItems.filter(item => item.cartitemid !== cartitemid));
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error('Error deleting item (Cart.jsx):', error);
     }
   };
+
+  // Handle checkout: Redirect to Stripe Checkout
+  const handleCheckout = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/payments/create-checkout-session', {
+        amount: totalPrice,
+        currency: 'sgd',
+        cartItems: productDetails.map(item => ({
+          name: item.name,
+          price: item.price.slice(4),
+        })),
+      });
   
+      // Redirect to Stripe Checkout
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error('Error during checkout:', error);
+    }
+  };
+
   return (
     <div className={styles.cartContainer}>
       <div className={styles.mainContent}>
         <Breadcrumb />
         <div className={styles.cartAndSummary}>
           <div className={styles.cartItems}>
-            {currentProducts.map(item => (
+            {productDetails.map(item => (
               <div key={item.cartitemid} className={styles.cartItem}>
                 <img src={item.image} alt={item.productname} className={styles.cartImage} />
                 <div className={styles.itemDetails}>
@@ -143,20 +163,20 @@ const Cart = () => {
               </div>
             ))}
             <div className={styles.pagination}>
-              <Pagination 
-                count={Math.ceil(productDetails.length / productsPerPage)} 
-                page={currentPage} 
-                onChange={handlePageChange} 
-                sx={{ 
-                  marginTop: '50px', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
+              <Pagination
+                count={Math.ceil(productDetails.length / productsPerPage)}
+                page={currentPage}
+                onChange={handlePageChange}
+                sx={{
+                  marginTop: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
                   '& .Mui-selected': {
                     backgroundColor: 'var(--primary-color)',
-                    color: '#fff', 
+                    color: '#fff',
                     '&:hover': {
                       backgroundColor: 'var(--primary-color)',
-                      color: '#fff', 
+                      color: '#fff',
                     },
                   }
                 }}
@@ -182,6 +202,7 @@ const Cart = () => {
                   color: 'var(--primary-color)',
                 },
               }}
+              onClick={handleCheckout}
             >
               Checkout
             </Button>
@@ -189,7 +210,7 @@ const Cart = () => {
         </div>
       </div>
     </div>
-  );  
+  );
 };
 
 export default Cart;
