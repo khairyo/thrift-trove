@@ -149,7 +149,7 @@ const Cart = () => {
         <Breadcrumb />
         <div className={styles.cartAndSummary}>
           <div className={styles.cartItems}>
-            {productDetails.map(item => (
+            {currentProducts.map(item => (
               <div key={item.cartitemid} className={styles.cartItem}>
                 <img src={item.image} alt={item.productname} className={styles.cartImage} />
                 <div className={styles.itemDetails}>
