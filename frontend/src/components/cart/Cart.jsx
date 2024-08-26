@@ -110,17 +110,15 @@ const Cart = () => {
   // Delete item from cart
   const handleDeleteItem = async (cartitemid) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/delete`, {
-        data: { 
-          cartitemid: cartitemid, 
-          accid: accid 
-        },
-      });      
-
+      await axios.delete('http://localhost:5000/api/cart/delete', {
+        data: { cartitemid, accid: accid }
+      });
+  
+      // Filter out the deleted item from both productDetails and cartItems
       setProductDetails(productDetails.filter(item => item.cartitemid !== cartitemid));
       setCartItems(cartItems.filter(item => item.cartitemid !== cartitemid));
     } catch (error) {
-      console.error('Error deleting item (Cart.jsx):', error);
+      console.error('Error deleting item:', error);
     }
   };
 
