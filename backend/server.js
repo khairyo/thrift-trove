@@ -17,13 +17,16 @@ app.get('/', (req, res) => {
 app.use("/api/account", require("./routes/account.route"))
 // app.use("/api/user-profile", require("./routes/userProfile.route"))
 
-// Product & Wishlist & Cart
+// Product & Cart
 app.use("/api/product", require("./routes/product.route"))
 app.use("/api/cart", require("./routes/cart.route"))
 
 // My Purchases & My Sales
 // app.use("/api/mypurchases", require("./routes/mypurchases.route"))
 // app.use("/api/mysales", require("./routes/mysales.route"))
+
+// Payment (Stripe)
+app.use("/api/payments", require("./routes/payment.route"));
 
 // Blogs
 // app.use("/api/blog", require('./routes/blog.route'))

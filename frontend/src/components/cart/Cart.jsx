@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Breadcrumb from '../Breadcrumb';
 import Pagination from '@mui/material/Pagination';
-
 import styles from './styles/Cart.module.css';
 
 const Cart = () => {
@@ -122,7 +121,26 @@ const Cart = () => {
       console.error('Error deleting item:', error);
     }
   };
+
+  // Handle checkout: Redirect to Stripe Checkout
+  const handleCheckout = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/payments/create-checkout-session', {
+        amount: totalPrice,
+        currency: 'sgd',
+        cartItems: productDetails.map(item => ({
+          name: item.name,
+          price: item.price.slice(4),
+        })),
+      });
   
+      // Redirect to Stripe Checkout
+      window.location.href = response.data.url;
+    } catch (error) {
+      console.error('Error during checkout:', error);
+    }
+  };
+
   return (
     <div className={styles.cartContainer}>
       <div className={styles.mainContent}>
@@ -143,20 +161,20 @@ const Cart = () => {
               </div>
             ))}
             <div className={styles.pagination}>
-              <Pagination 
-                count={Math.ceil(productDetails.length / productsPerPage)} 
-                page={currentPage} 
-                onChange={handlePageChange} 
-                sx={{ 
-                  marginTop: '50px', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
+              <Pagination
+                count={Math.ceil(productDetails.length / productsPerPage)}
+                page={currentPage}
+                onChange={handlePageChange}
+                sx={{
+                  marginTop: '50px',
+                  display: 'flex',
+                  justifyContent: 'center',
                   '& .Mui-selected': {
                     backgroundColor: 'var(--primary-color)',
-                    color: '#fff', 
+                    color: '#fff',
                     '&:hover': {
                       backgroundColor: 'var(--primary-color)',
-                      color: '#fff', 
+                      color: '#fff',
                     },
                   }
                 }}
@@ -182,6 +200,7 @@ const Cart = () => {
                   color: 'var(--primary-color)',
                 },
               }}
+              onClick={handleCheckout}
             >
               Checkout
             </Button>
@@ -189,7 +208,7 @@ const Cart = () => {
         </div>
       </div>
     </div>
-  );  
+  );
 };
 
 export default Cart;
