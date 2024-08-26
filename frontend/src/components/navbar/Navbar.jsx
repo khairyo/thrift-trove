@@ -80,7 +80,9 @@ function Navbar() {
 
           {isLoggedIn && userProfile ? (
             <div className={styles.loggedInContainer}>
-              <ShoppingCartIcon className={styles.cartIcon} />
+              <Link to="/cart" className={styles.cartIcon}>
+              <ShoppingCartIcon />
+              </Link>
               <img 
                 src={userProfile.profile_picture || '/path/to/placeholder-image.png'} 
                 alt="Profile" 

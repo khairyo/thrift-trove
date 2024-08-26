@@ -3,7 +3,9 @@
 
 :root {
   --primary-color: #FE5A2A;
+  --primary-color-rgba: rgba(254, 90, 42, 0.4);
   --secondary-color: #363D66;
+  --box-shadow-product: 0 4px 8px rgba(0, 0, 0, 0.15);
   --font-size-h1: 29px;
   --font-size-h2: 25px;
   --font-size-h3: 19px;

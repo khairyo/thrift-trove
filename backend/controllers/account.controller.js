@@ -19,7 +19,7 @@ const accountController = {
 
 	getById: async (req, res) => {
 		try {
-			const accemail = req.user.accemail;  // Assuming the token contains the user's email
+			const accemail = req.user.accemail; 
 			const sql = 'SELECT * FROM account WHERE accemail = $1';
 	
 			const { rows } = await postgre.query(sql, [accemail]);

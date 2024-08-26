@@ -16,6 +16,54 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 24; 
 
+  const [accid, setAccid] = useState(null);
+
+  // Gets JTW from local storage
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchAccid(token);
+    } else {
+      throw new Error("No token found in local storage");
+    }
+  }, []);
+
+  // Pass in JWT to get user data from database -> return user's accid
+  const fetchAccid = async (token) => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/account', {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setAccid(response.data.data.accid);
+
+      // DEBUG - delete later
+      console.log("User profile:", response.data.data);
+
+    } catch (error) {
+      console.error("Error fetching user profile", error);
+    }
+  };
+
+  // Add item to cart
+  const addToCart = async (productId) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/cart/create', {
+        accid: accid,
+        productid: productId
+      });
+      if (response.status === 200) {
+        console.log("Item added to cart:", response.data.data[0]);
+      } else {
+        console.error("Failed to add item to cart:", response.data.msg);
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error.message);
+    }
+  };
+
+  // Fetch all products from database
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -78,7 +126,13 @@ const Products = () => {
                   <h3 className={styles.productName}>{product.name}</h3>
                   <div className={styles.priceCartContainer}>
                     <p className={styles.price}>$ {product.price}</p>
-                    <button className={styles.addButton}>
+                    <button 
+                      className={styles.addButton} 
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevents the navigation
+                        addToCart(product.id);
+                      }}
+                    >
                       <AddShoppingCartIcon className={styles.cartIcon} /> 
                     </button>
                   </div>

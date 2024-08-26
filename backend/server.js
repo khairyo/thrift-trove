@@ -21,7 +21,7 @@ app.use("/api/account", require("./routes/account.route"))
 // Product & Wishlist & Cart
 app.use("/api/product", require("./routes/product.route"))
 // app.use("/api/wishlist", require("./routes/wishlist.route"))
-// app.use("/api/cart", require("./routes/cart.route"))
+app.use("/api/cart", require("./routes/cart.route"))
 
 // My Purchases & My Sales
 // app.use("/api/mypurchases", require("./routes/mypurchases.route"))

@@ -1,0 +1,83 @@
+.cartContainer {
+  padding: 30px 5%;
+  font-family: var(--font-family);
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cartAndSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10px; 
+  padding: 0 3%;
+}
+
+.cartItems {
+  flex: 3;
+  margin-right: 5%;
+}
+
+.cartItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--primary-color-rgba);
+  padding: 0 3% 20px 3%;
+}
+
+.cartImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow-product);
+}
+
+.itemDetails {
+  flex: 2;
+}
+
+.itemDetails h2 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.itemDetails p {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.deleteIcon {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.cartSummary {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 250px;
+  align-self: flex-start; /* Align to top of cartItems */
+}
+
+.cartSummary p {
+  margin: 8px 0;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.cartSummary h2 {
+  font-size: 18px;
+  margin: 20px 0 20px 0;
+  font-weight: bold;
+}
