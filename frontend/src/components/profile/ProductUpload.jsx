@@ -3,8 +3,6 @@ import axios from 'axios';
 import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 import Breadcrumb from '../Breadcrumb';
 
-require('dotenv').config();
-
 const ProductUpload = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -55,7 +53,10 @@ const ProductUpload = () => {
       imageData.append('file', formData.image); // The image file
       imageData.append('upload_preset', 'thrift-trove'); // Replace with your actual upload preset
 
-      const cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
+      const cloud_name = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+      if (!cloud_name) {
+        throw new Error('Cloud name not found in environment variables');
+      }
 
       // Upload the image to Cloudinary
       const imageUploadResponse = await axios.post(

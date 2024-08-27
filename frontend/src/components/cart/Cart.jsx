@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Breadcrumb from '../Breadcrumb';
 import Pagination from '@mui/material/Pagination';
+
+import useFetchAccid from '../../hooks/UseFetchAccid';
 import styles from './styles/Cart.module.css';
 
 const Cart = () => {
@@ -12,40 +14,20 @@ const Cart = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [deliveryFee] = useState(5.00);
-  const [accid, setAccid] = useState(null);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 7; 
 
-  // Gets JWT from local storage
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchAccid(token);
-    } else {
-      throw new Error("No token found in local storage");
-    }
-  }, []);
-
-  // Fetch user's accid using JWT
-  const fetchAccid = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/account', {
-        headers: {
-          Authorization: token,
-        },
-      });
-      setAccid(response.data.data.accid);
-    } catch (error) {
-      console.error("Error fetching user profile", error);
-    }
-  };
+  const { accid, error } = useFetchAccid();
 
   // Fetch cart items using accid
   useEffect(() => {
     const fetchCartItems = async () => {
-      if (!accid) return; 
+      if (!accid) {
+        console.error('Error fetching accid:', error);
+        return;
+      }
   
       try {
         const response = await axios.get('http://localhost:5000/api/cart/get-all-cartitems', {

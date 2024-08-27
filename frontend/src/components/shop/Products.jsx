@@ -6,6 +6,7 @@ import Pagination from '@mui/material/Pagination';
 
 import Breadcrumb from '../Breadcrumb';
 import Filters from './Filters'; 
+import useFetchAccid from '../../hooks/UseFetchAccid';
 
 // Import styles
 import styles from './styles/Products.module.css'; 
@@ -16,35 +17,10 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 24; 
 
-  const [accid, setAccid] = useState(null);
-
-  // Gets JTW from local storage
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchAccid(token);
-    } else {
-      throw new Error("No token found in local storage");
-    }
-  }, []);
-
-  // Pass in JWT to get user data from database -> return user's accid
-  const fetchAccid = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/account', {
-        headers: {
-          Authorization: token,
-        },
-      });
-      setAccid(response.data.data.accid);
-
-      // DEBUG - delete later
-      console.log("User profile:", response.data.data);
-
-    } catch (error) {
-      console.error("Error fetching user profile", error);
-    }
-  };
+  const { accid, error } = useFetchAccid();
+  if (!accid) {
+    throw new Error("No accid found:", error);
+  }
 
   // Add item to cart
   const addToCart = async (productId) => {

@@ -18,6 +18,7 @@ const HomeShop = () => {
     navigate('/shop');
   };
 
+  // CHANGE: Change to recycled hook version
   // Gets JTW from local storage
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -45,6 +46,7 @@ const HomeShop = () => {
       console.error("Error fetching user profile", error);
     }
   };
+  //
 
   // Add item to cart
   const addToCart = async (productId) => {

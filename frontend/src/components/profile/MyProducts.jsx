@@ -4,6 +4,7 @@ import axios from 'axios';
 import Pagination from '@mui/material/Pagination'; 
 
 import Breadcrumb from '../Breadcrumb';
+import useFetchAccid from '../../hooks/UseFetchAccid';
 
 // Import styles
 import styles from './styles/MyProducts.module.css'; 
@@ -12,42 +13,18 @@ const MyProducts = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 24; 
-  const [accid, setAccid] = useState(null);
 
-  // Gets JWT from local storage
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchAccid(token);
-    } else {
-      throw new Error("No token found in local storage");
-    }
-  }, []);
-
-  // Pass in JWT to get user data from database -> return user's accid
-  const fetchAccid = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/account', {
-        headers: {
-          Authorization: token,
-        },
-      });
-      setAccid(parseInt(response.data.data.accid, 10)); // Convert to integer
-
-      // DEBUG - delete later
-      console.log("User profile:", response.data.data);
-      console.log(typeof response.data.data.accid);
-
-    } catch (error) {
-      console.error("Error fetching user profile", error);
-    }
-  };
+  const { accid, error } = useFetchAccid();
+  if (!accid) {
+    throw new Error("No accid found:", error);
+  }
+  const accidInt = parseInt(accid, 10)
 
   // Fetch products from database where JWT accid = "products" db table uploader_id
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/product/get-all-products-by-acc/${accid}`);
+        const response = await axios.get(`http://localhost:5000/api/product/get-all-products-by-acc/${accidInt}`);
         setProducts(response.data.data);
   
         console.log("Products:", response.data.data); // For debugging
@@ -56,10 +33,10 @@ const MyProducts = () => {
       }
     };
   
-    if (accid) {
+    if (accidInt) {
       fetchProducts();
     }
-  }, [accid]);  
+  }, [accidInt]);  
 
   // Pagination
   const indexOfLastProduct = currentPage * productsPerPage;
