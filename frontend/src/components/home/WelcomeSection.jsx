@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 // import components
 import Carousel from './Carousel';
@@ -17,7 +18,9 @@ function WelcomeSection() {
         <p>
           At <span className={styles.highlight2}>ThriftTrove</span>, we believe in the joy of discovering unique treasures and giving pre-loved items a new home. Whether you're looking for a vintage gem, a trendy piece, or a one-of-a-kind find, we've got something special just for you. Dive into our collection and enjoy the thrill of thrifting from the comfort of your home.
         </p>
-        <Button sx={primaryButton} variant="contained">Shop now</Button>
+        <Link to="/shop">
+          <Button sx={primaryButton} variant="contained">Shop now</Button>
+        </Link>
       </div>
 
       <div className={styles.carouselSection}>

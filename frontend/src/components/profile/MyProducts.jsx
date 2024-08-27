@@ -15,9 +15,10 @@ const MyProducts = () => {
   const productsPerPage = 24; 
 
   const { accid, error } = useFetchAccid();
-  if (!accid) {
-    throw new Error("No accid found:", error);
+  if (accid) {
+    console.log("accid:", accid);
   }
+  // DEBUG: add error handling here
   const accidInt = parseInt(accid, 10)
 
   // Fetch products from database where JWT accid = "products" db table uploader_id

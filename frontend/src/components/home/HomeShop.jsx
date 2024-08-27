@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; 
 import { Button } from '@mui/material';
+import useFetchAccid from '../../hooks/UseFetchAccid.js';
 
 // import styles
 import styles from './styles/HomeShop.module.css'; 
@@ -10,7 +11,6 @@ import { primaryButton } from '../styles/MuiStyles.js';
 
 const HomeShop = () => {
   const [products, setProducts] = useState([]);
-  const [accid, setAccid] = useState(null);
 
   const navigate = useNavigate();
 
@@ -18,35 +18,11 @@ const HomeShop = () => {
     navigate('/shop');
   };
 
-  // CHANGE: Change to recycled hook version
-  // Gets JTW from local storage
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchAccid(token);
-    } else {
-      throw new Error("No token found in local storage");
-    }
-  }, []);
-
-  // Pass in JWT to get user data from database -> return user's accid
-  const fetchAccid = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/account', {
-        headers: {
-          Authorization: token,
-        },
-      });
-      setAccid(response.data.data.accid);
-
-      // DEBUG - delete later
-      console.log("User profile:", response.data.data);
-
-    } catch (error) {
-      console.error("Error fetching user profile", error);
-    }
-  };
-  //
+  const { accid, error } = useFetchAccid();
+  if (accid) {
+    console.log("accid:", accid);
+  } 
+  // DEBUG: add error handling here
 
   // Add item to cart
   const addToCart = async (productId) => {
@@ -68,12 +44,17 @@ const HomeShop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/product/get-all-products');
-        setProducts(response.data.data.slice(0, 6));
+        let response;
+        if (accid) {
+          const response = await axios.get(`http://localhost:5000/api/product/get-all-other-products/${accid}`);
+          setProducts(response.data.data.slice(0, 6));
+        } else if (!accid) {
+          const response = await axios.get('http://localhost:5000/api/product/get-all-products');
+          setProducts(response.data.data.slice(0, 6));
+        }
 
         // DEBUG
         console.log('Products:', response.data.data);
-        console.log(typeof response.data.data);
 
       } catch (error) {
         console.error('Error fetching the products:', error);
@@ -81,7 +62,7 @@ const HomeShop = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [accid]);
 
   return (
     <div className={styles.shopContainer}>

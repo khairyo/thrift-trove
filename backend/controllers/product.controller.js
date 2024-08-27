@@ -15,6 +15,19 @@ const productController = {
             res.status(404).json({ msg: error.msg })
         }
     },
+    getAllOtherProducts: async (req, res) => {
+        try {
+            const { accid } = req.params;
+    
+            const sql = 'SELECT * FROM products WHERE uploader_id != $1 ORDER BY id ASC';
+    
+            const { rows } = await postgre.query(sql, [accid]);
+            res.status(200).json({ data: rows });
+    
+        } catch (error) {
+            res.status(404).json({ msg: error.message });
+        }
+    },
     getProductById: async (req, res) => {
         try {
             // OBSOLETE

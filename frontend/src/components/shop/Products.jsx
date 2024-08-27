@@ -18,9 +18,10 @@ const Products = () => {
   const productsPerPage = 24; 
 
   const { accid, error } = useFetchAccid();
-  if (!accid) {
-    throw new Error("No accid found:", error);
-  }
+  if (accid) {
+    console.log("accid:", accid);
+  } 
+  // DEBUG: add error handling here
 
   // Add item to cart
   const addToCart = async (productId) => {
@@ -43,17 +44,22 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/product/get-all-products');
-        setProducts(response.data.data);
-        setFilteredProducts(response.data.data);
-
+        if (accid) {
+          const response = await axios.get(`http://localhost:5000/api/product/get-all-other-products/${accid}`);
+          setProducts(response.data.data);
+          setFilteredProducts(response.data.data);
+        } else if (!accid) {
+          const response = await axios.get('http://localhost:5000/api/product/get-all-products');
+          setProducts(response.data.data);
+          setFilteredProducts(response.data.data);
+        }
       } catch (error) {
         console.error('Error fetching the products:', error);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [accid]);
 
   const handleFilterChange = (genderFilters, clothingTypeFilters) => {
     let filtered = products;

@@ -20,15 +20,14 @@ const Cart = () => {
   const productsPerPage = 7; 
 
   const { accid, error } = useFetchAccid();
+  if (accid) {
+    console.log("accid:", accid);
+  } 
+  // DEBUG: add error handling here
 
   // Fetch cart items using accid
   useEffect(() => {
-    const fetchCartItems = async () => {
-      if (!accid) {
-        console.error('Error fetching accid:', error);
-        return;
-      }
-  
+    const fetchCartItems = async () => {  
       try {
         const response = await axios.get('http://localhost:5000/api/cart/get-all-cartitems', {
           params: { accid: accid }
