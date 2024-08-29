@@ -12,7 +12,7 @@ const productController = {
             res.status(200).json({ data: rows })
 
         } catch (error) {
-            res.status(404).json({ msg: error.msg })
+            res.status(404).json({ msg: error.message })
         }
     },
     getAllOtherProducts: async (req, res) => {
@@ -69,8 +69,7 @@ const productController = {
             console.log('Received request:', req.body);
 
             const { category, type, product_url, image, name, price, description, uploader_id } = req.body
-            const sql = `INSERT INTO products(id, category, type, product_url, image, name, price, description, uploader_id)
-                         VALUES(nextval('product_id_seq'), $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`
+            const sql = `INSERT INTO products(id, category, type, product_url, image, name, price, description, uploader_id) VALUES(nextval('product_id_seq'), $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`
 
             const { rows } = await postgre.query(sql, [category, type, product_url, image, name, price, description, uploader_id])
 
@@ -98,7 +97,7 @@ const productController = {
             return res.status(404).json({ msg: "Product is not found" })
 
         } catch (error) {
-            res.status(404).json({ msg: error.msg })
+            res.status(404).json({ msg: error.message })
         }
     }
 }
