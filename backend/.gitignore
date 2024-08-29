@@ -1,3 +1,6 @@
 clothes-scraper.py
 /node_modules
 .env
+
+# Jest Coverage Reports
+/coverage
