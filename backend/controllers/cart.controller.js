@@ -5,8 +5,7 @@ const cartController = {
     getAllCartItems: async (req, res) => {
         try {
             const { accid } = req.query;
-            const sql = `SELECT cartitemid, accid, productid, quantity, added_at FROM cart
-                        WHERE accid = $1 ORDER BY added_at DESC;`
+            const sql = `SELECT cartitemid, accid, productid, quantity, added_at FROM cart WHERE accid = $1 ORDER BY added_at DESC;`
 
             const { rows } = await postgre.query(sql, [accid])
 
@@ -43,7 +42,7 @@ const cartController = {
 
             return res.status(404).json({ msg: "Failed to add an item to cart" })
         } catch (error) {
-            res.status(404).json({ msg: error.msg })
+            res.status(404).json({ msg: error.message })
         }
     },
     deleteItem: async (req, res) => {
@@ -61,7 +60,7 @@ const cartController = {
             return res.status(404).json({ msg: "Item is not found" })
 
         } catch (error) {
-            res.status(404).json({ msg: error.msg })
+            res.status(404).json({ msg: error.message })
         }
     }
 }
