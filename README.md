@@ -14,7 +14,7 @@
 
 ## Tech Stack
 
-- **Front-End**: React.js, Bootstrap, CSS
+- **Front-End**: React.js, CSS
 - **Back-End**: Node.js, Express.js
 - **Database**: PostgreSQL
 - **APIs**: Cloudinary (image hosting), Stripe (payments)
