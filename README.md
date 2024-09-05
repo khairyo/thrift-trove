@@ -38,15 +38,15 @@ To set up **ThriftTrove** locally, follow these steps:
    cd thrifttrove
    ```
 2. **Install dependencies:**
-  ```npm install```
+   ```npm install```
 3. Configure Environment Variables: Create a .env file in the root directory and include the following:
-  ```
-  PORT=5000
-  DATABASE_URL=your_postgresql_database_url
-  CLOUDINARY_API_KEY=your_cloudinary_api_key
-  STRIPE_SECRET_KEY=your_stripe_secret_key
-  JWT_SECRET=your_jwt_secret
-  ```
+   ```
+   PORT=5000
+   DATABASE_URL=your_postgresql_database_url
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   JWT_SECRET=your_jwt_secret
+   ```
 4. Set Up the Database: Ensure PostgreSQL is running and create the necessary tables. (NOT CONFIGURED YET SORRY)
    ```
    npm run migrate
