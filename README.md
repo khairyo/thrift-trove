@@ -31,14 +31,8 @@ To set up **ThriftTrove** locally, follow these steps:
 
 ### Steps
 
-1. **Clone the Repository:**
-   ```
-   bash
-   git clone https://github.com/yourusername/thrifttrove.git
-   cd thrifttrove
-   ```
-2. **Install dependencies:**
-   ```npm install```
+1. **Clone the repository**
+2. **Install dependencies:** ```npm install```
 3. Configure Environment Variables: Create a .env file in the root directory and include the following:
    ```
    PORT=5000
