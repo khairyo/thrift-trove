@@ -4,7 +4,7 @@
 
 ## Features
 
-- **User Authentication**: Secure login and registration using **JWT** and **OAuth** (Google/Facebook).
+- **User Authentication**: Secure login and registration using **JWT**.
 - **Product Listings**: Browse, view, and search for items on sale, complete with product descriptions and images.
 - **Image Hosting**: Integrated with **Cloudinary** for uploading and managing product images.
 - **Secure Payments**: Payments are processed securely using **Stripe**.
