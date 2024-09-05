@@ -8,9 +8,9 @@
 - **Product Listings**: Browse, view, and search for items on sale, complete with product descriptions and images.
 - **Image Hosting**: Integrated with **Cloudinary** for uploading and managing product images.
 - **Secure Payments**: Payments are processed securely using **Stripe**.
-- **Interactive Maps**: **Leaflet Maps** are used to display sellers' locations, enabling users to find nearby items.
-- **Responsive Design**: Optimized for mobile and desktop devices.
-- **Testing**: Unit and integration testing implemented to ensure code quality and functionality.
+- **(UNDER DEVELOPMENT)  Interactive Maps**: **Leaflet Maps** are used to display sellers' locations, enabling users to find nearby items.
+- **(UNDER DEVELOPMENT)  Responsive Design**: Optimized for mobile and desktop devices.
+- **(UNDER DEVELOPMENT) Testing**: Unit and integration testing implemented to ensure code quality and functionality.
 
 ## Tech Stack
 
