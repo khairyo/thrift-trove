@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'; 
 import Pagination from '@mui/material/Pagination'; 
@@ -17,11 +17,14 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 24; 
 
-  const { accid, error } = useFetchAccid();
-  if (accid) {
-    console.log("accid:", accid);
-  } 
-  // DEBUG: add error handling here
+  const { accid, error } = useFetchAccid(); 
+  const location = useLocation();  // Get the URL query params
+
+  // Extract the search query from the URL
+  const getSearchQuery = () => {
+    const params = new URLSearchParams(location.search); // Parse the URL for search query
+    return params.get('search') || '';  // Return the search query or empty string if not present
+  };
 
   // Add item to cart
   const addToCart = async (productId) => {
@@ -44,37 +47,47 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        let response;
         if (accid) {
-          const response = await axios.get(`http://localhost:5000/api/product/get-all-other-products/${accid}`);
-          setProducts(response.data.data);
-          setFilteredProducts(response.data.data);
-        } else if (!accid) {
-          const response = await axios.get('http://localhost:5000/api/product/get-all-products');
-          setProducts(response.data.data);
-          setFilteredProducts(response.data.data);
+          response = await axios.get(`http://localhost:5000/api/product/get-all-other-products/${accid}`);
+        } else {
+          response = await axios.get('http://localhost:5000/api/product/get-all-products');
         }
+        const allProducts = response.data.data;
+        setProducts(allProducts);
+
+        // Get the search query from the URL
+        const searchQuery = getSearchQuery().toLowerCase();
+        applyFilters(allProducts, activeFilters, searchQuery);
       } catch (error) {
         console.error('Error fetching the products:', error);
       }
     };
 
     fetchProducts();
-  }, [accid]);
+  }, [accid, location.search]);
 
-  const handleFilterChange = (genderFilters, clothingTypeFilters) => {
-    let filtered = products;
+  const applyFilters = (allProducts, filters, searchQuery) => {
+    let filtered = allProducts;
 
-    if (genderFilters.men || genderFilters.women) {
+    if (filters.gender.men || filters.gender.women) {
       filtered = filtered.filter(product =>
-        (genderFilters.men && product.category === 'Men') ||
-        (genderFilters.women && product.category === 'Women')
+        (filters.gender.men && product.category === 'Men') ||
+        (filters.gender.women && product.category === 'Women')
       );
     }
 
-    if (clothingTypeFilters.tops || clothingTypeFilters.bottoms) {
+    if (filters.clothingType.tops || filters.clothingType.bottoms) {
       filtered = filtered.filter(product =>
-        (clothingTypeFilters.tops && product.type === 'Tops') ||
-        (clothingTypeFilters.bottoms && product.type === 'Bottoms')
+        (filters.clothingType.tops && product.type === 'Tops') ||
+        (filters.clothingType.bottoms && product.type === 'Bottoms')
+      );
+    }
+
+    if (searchQuery) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchQuery) ||
+        product.description.toLowerCase().includes(searchQuery)
       );
     }
 
@@ -82,6 +95,20 @@ const Products = () => {
     setCurrentPage(1); 
   };
 
+  const [activeFilters, setActiveFilters] = useState({
+    gender: { men: false, women: false },
+    clothingType: { tops: false, bottoms: false },
+  });
+
+  const handleFilterChange = (genderFilters, clothingTypeFilters) => {
+    const updatedFilters = { gender: genderFilters, clothingType: clothingTypeFilters };
+    setActiveFilters(updatedFilters);
+
+    const searchQuery = getSearchQuery().toLowerCase();
+    applyFilters(products, updatedFilters, searchQuery);
+  };
+
+  // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);

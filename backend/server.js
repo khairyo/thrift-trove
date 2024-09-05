@@ -32,6 +32,9 @@ app.post('/webhook', express.raw({ type: 'application/json' }), require('./contr
 // Blogs
 // app.use("/api/blog", require('./routes/blog.route'));
 
+// Search
+app.use("/api/search", require("./routes/search.route"));
+
 app.use(bodyParser.json());
 
 app.listen(process.env.PORT, () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginDialog from './LoginDialog';
@@ -12,6 +12,10 @@ function Navbar() {
   const [userProfile, setUserProfile] = useState(null);
   const [isLoginDialogOpen, setLoginDialogOpen] = useState(false);
   const [isRegisterDialogOpen, setRegisterDialogOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
+  const navigate = useNavigate();  
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -33,6 +37,18 @@ function Navbar() {
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Error fetching user profile", error);
+    }
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' || e.type === 'click') {
+      if (searchInput.trim()) {
+        navigate(`/shop?search=${encodeURIComponent(searchInput)}`);
+      }
     }
   };
 
@@ -69,13 +85,17 @@ function Navbar() {
           </ul>
         </div>
         <div className={styles.rightContainer}>
+
           <div className={styles.searchContainer}>
             <input 
               type="text" 
               className={styles.searchInput} 
               placeholder="Search products..."
+              value={searchInput}
+              onChange={handleSearchInputChange}
+              onKeyPress={handleSearchSubmit}
             />
-            <SearchIcon className={styles.searchIcon} />
+            <SearchIcon className={styles.searchIcon} onClick={handleSearchSubmit} /> 
           </div>
 
           {isLoggedIn && userProfile ? (
