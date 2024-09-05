@@ -58,3 +58,16 @@ To set up **ThriftTrove** locally, follow these steps:
 ## Testing
 Run unit and integration tests using the following command:
 ```npm run test```
+
+## Screenshots (of certain portions)
+### Homepage
+![image](https://github.com/user-attachments/assets/a68984ab-3b2e-43d4-b4b2-5536da1da126)
+![image](https://github.com/user-attachments/assets/61e88d07-4885-4834-b2b1-d8654d063c74)
+
+### Shop
+![image](https://github.com/user-attachments/assets/28a5c1ce-5473-4e7f-b66d-7be4c3ae536d)
+
+### Cart
+![image](https://github.com/user-attachments/assets/3b41699e-ece8-470e-8317-a4a4eec42374)
+
+
